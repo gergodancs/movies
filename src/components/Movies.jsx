@@ -6,6 +6,7 @@ import "./styles/movies.css";
 const Movies = (props) => {
   const [detailsFromWiki, setDetailsFromWiki] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
+  const [searchKey, setSearchKey] = useState(null);
   const url = `https://en.wikipedia.org/w/api.php?`;
   const params = {
     origin: "*",
@@ -24,14 +25,17 @@ const Movies = (props) => {
 
     const response = await axios(url, { params });
 
+    console.log(response);
+
     let data = response.data.query.pages;
     let key = Object.keys(data);
+    setSearchKey(key[0]);
 
     response && setDetailsFromWiki(data[key]);
     setShowDetails(true);
+    console.log(searchKey);
   };
 
-  console.log(detailsFromWiki);
   return (
     <>
       <ul>
@@ -50,7 +54,11 @@ const Movies = (props) => {
         })}
       </ul>
       {showDetails && (
-        <MovieDetails details={detailsFromWiki} showModal={setShowDetails} />
+        <MovieDetails
+          details={detailsFromWiki}
+          showModal={setShowDetails}
+          searchKey={searchKey}
+        />
       )}
     </>
   );
