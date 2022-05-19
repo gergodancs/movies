@@ -22,18 +22,12 @@ const Movies = (props) => {
 
   const fetchDetailsFromWiki = async (title) => {
     params.gsrsearch = title;
-
     const response = await axios(url, { params });
-
-    console.log(response);
-
     let data = response.data.query.pages;
     let key = Object.keys(data);
     setSearchKey(key[0]);
-
     response && setDetailsFromWiki(data[key]);
     setShowDetails(true);
-    console.log(searchKey);
   };
 
   return (
