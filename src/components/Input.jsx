@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import LoadingSpinner from "./LoadingSpinner";
 import Movies from "./Movies";
+import "./styles/input.css";
 
 const Input = () => {
   const [input, setInput] = useState("");
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const movies_query = `{
     searchMovies(query: "${input}") {
@@ -23,31 +27,60 @@ const Input = () => {
         }
       }
     }
-  }
-  
-  `;
+  }`;
+
+  const fetchMoviesHandler = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        "https://tmdb.sandbox.zoosh.ie/dev/grphql/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: movies_query }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const data = await response.json();
+      setMovies(data.data.searchMovies);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  };
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    fetch("https://tmdb.sandbox.zoosh.ie/dev/grphql/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: movies_query }),
-    })
-      .then((res) => res.json())
-      .then((data) => setMovies(data.data.searchMovies));
+
+    fetchMoviesHandler();
   };
 
+  let content = <p>Type any movie title and click for the results</p>;
+  if (movies.length > 0) {
+    content = <Movies movies={movies} />;
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
+  }
+
+  if (isLoading) {
+    content = <LoadingSpinner />;
+  }
   return (
-    <form onSubmit={formSubmitHandler}>
-      <input
-        value={input}
-        type="text"
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <button>Search Movies</button>
-      <Movies movies={movies} />
-    </form>
+    <>
+      <form onSubmit={formSubmitHandler}>
+        <input
+          value={input}
+          type="text"
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button>Search Movies</button>
+      </form>
+      {content}
+    </>
   );
 };
 

@@ -1,0 +1,15 @@
+ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  list-style: none;
+}
+ul div {
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
