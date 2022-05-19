@@ -1,8 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import MovieDetails from "./MovieDetails";
 import "./styles/movies.css";
 
 const Movies = (props) => {
+  const [detailsFromWiki, setDetailsFromWiki] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
   const url = `https://en.wikipedia.org/w/api.php?`;
   const params = {
     origin: "*",
@@ -24,26 +27,32 @@ const Movies = (props) => {
     let data = response.data.query.pages;
     let key = Object.keys(data);
 
-    response && console.log("ez a movi", data[key].extract);
+    response && setDetailsFromWiki(data[key]);
+    setShowDetails(true);
   };
 
+  console.log(detailsFromWiki);
   return (
-    <ul>
-      {props.movies.map((movie) => {
-        return (
-          <li key={movie.id}>
-            <div>
-              <h2>{movie.name}</h2>
-              <p>{movie.overview}</p>
-              <span>Release date: {movie.releaseDate}</span>
-              <button onClick={() => fetchDetailsFromWiki(movie.name)}>
-                More info
-              </button>
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <ul>
+        {props.movies.map((movie) => {
+          return (
+            <li key={movie.id}>
+              <div>
+                <h2 onClick={() => fetchDetailsFromWiki(movie.name)}>
+                  {movie.name}
+                </h2>
+                <p>{movie.overview}</p>
+                <span>Release date: {movie.releaseDate}</span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      {showDetails && (
+        <MovieDetails details={detailsFromWiki} showModal={setShowDetails} />
+      )}
+    </>
   );
 };
 
