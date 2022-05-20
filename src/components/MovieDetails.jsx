@@ -16,7 +16,8 @@ const MovieDetails = (props) => {
     let imdbUrl = `https://imdb-api.com/en/API/SearchMovie/k_n4q9ekrw/${props.details.title}`;
     fetch(imdbUrl)
       .then((res) => res.json())
-      .then((data) => setImdbResults(data.results[0]));
+      .then((data) => setImdbResults(data.results[0]))
+      .catch((err) => console.log(err));
   }, [props.details.title]);
 
   const fetchRelatedMovies = useCallback(() => {
@@ -24,16 +25,18 @@ const MovieDetails = (props) => {
     fetch(imdbUrl)
       .then((res) => res.json())
       .then((data) => setSimilarMovies(data.similars));
+
     setIsLoadingRelated(false);
   }, [imdbSearchKey]);
 
   useEffect(() => {
     fetchSearchKeyFromImdb();
+    //fetchRelatedMovies();
   }, [fetchSearchKeyFromImdb]);
 
   const relatedClickHandler = () => {
-    fetchRelatedMovies();
     setShowRelated(true);
+    fetchRelatedMovies();
   };
 
   return (
