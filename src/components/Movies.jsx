@@ -21,7 +21,7 @@ const Movies = (props) => {
   };
 
   const fetchDetailsFromWiki = async (title) => {
-    params.gsrsearch = title;
+    params.gsrsearch = title + " movie";
     const response = await axios(url, { params });
     let data = response.data.query.pages;
     let key = Object.keys(data);
@@ -41,7 +41,7 @@ const Movies = (props) => {
                   {movie.name}
                 </h2>
                 <p>{movie.overview}</p>
-                <span>Release date: {movie.releaseDate}</span>
+                <span>Release date: {movie.releaseDate.slice(0, 10)}</span>
               </div>
             </li>
           );

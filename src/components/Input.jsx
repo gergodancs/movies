@@ -53,8 +53,8 @@ const Input = () => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-
     fetchMoviesHandler();
+    setInput("");
   };
 
   let content = <p>Type any movie title and click for the results</p>;
@@ -75,6 +75,7 @@ const Input = () => {
         <input
           value={input}
           type="text"
+          placeholder="Type a movie title:"
           onChange={(e) => setInput(e.target.value)}
         />
         <button>Search Movies</button>
