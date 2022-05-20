@@ -69,6 +69,10 @@ const Input = () => {
   if (isLoading) {
     content = <LoadingSpinner />;
   }
+  let isInputEmpty = false;
+  if (input.length > 0) {
+    isInputEmpty = true;
+  }
   return (
     <>
       <form onSubmit={formSubmitHandler}>
@@ -78,7 +82,7 @@ const Input = () => {
           placeholder="Type a movie title:"
           onChange={(e) => setInput(e.target.value)}
         />
-        <button>Search Movies</button>
+        <button disabled={!isInputEmpty}>Search Movies</button>
       </form>
       {content}
     </>

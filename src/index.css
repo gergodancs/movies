@@ -1,6 +1,7 @@
 * {
   margin: 0;
   box-sizing: border-box;
+  text-decoration: none;
 }
 
 body {
@@ -22,4 +23,7 @@ code {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+button {
+  letter-spacing: 0.1em;
 }

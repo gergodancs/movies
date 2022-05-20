@@ -36,12 +36,12 @@ const Movies = (props) => {
         {props.movies.map((movie) => {
           return (
             <li key={movie.id}>
-              <div>
+              <div className="movie__basic">
                 <h2 onClick={() => fetchDetailsFromWiki(movie.name)}>
                   {movie.name}
                 </h2>
                 <p>{movie.overview}</p>
-                <span>Release date: {movie.releaseDate.slice(0, 10)}</span>
+                <span>Release date: {movie?.releaseDate?.slice(0, 10)}</span>
               </div>
             </li>
           );
