@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MovieDetails from "./MovieDetails";
 import "./styles/movies.css";
 
 const Movies = (props) => {
   const [detailsFromWiki, setDetailsFromWiki] = useState([]);
-  const [showDetails, setShowDetails] = useState(false);
-  const [searchKey, setSearchKey] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [wikiSearchKey, setWikiSearchKey] = useState(null);
   const url = `https://en.wikipedia.org/w/api.php?`;
   const params = {
     origin: "*",
@@ -25,9 +25,9 @@ const Movies = (props) => {
     const response = await axios(url, { params });
     let data = response.data.query.pages;
     let key = Object.keys(data);
-    setSearchKey(key[0]);
+    setWikiSearchKey(key[0]);
     response && setDetailsFromWiki(data[key]);
-    setShowDetails(true);
+    setShowDetailsModal(true);
   };
 
   return (
@@ -47,11 +47,11 @@ const Movies = (props) => {
           );
         })}
       </ul>
-      {showDetails && (
+      {showDetailsModal && (
         <MovieDetails
           details={detailsFromWiki}
-          showModal={setShowDetails}
-          searchKey={searchKey}
+          showModal={setShowDetailsModal}
+          searchKey={wikiSearchKey}
         />
       )}
     </>
