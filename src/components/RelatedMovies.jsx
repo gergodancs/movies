@@ -3,9 +3,9 @@ import "./styles/relatedMovies.css";
 import LoadingSpinner from "./LoadingSpinner";
 
 const RelatedMovies = (props) => {
-  //   if (!props.isLoading && !props.similarMovies) {
-  //     return <h2>Sorry, IMDB says no movies like this </h2>;
-  //   }
+  if (props.similarMovies.length === 0) {
+    return <h2>Sorry, IMDB says no movies like this </h2>;
+  }
   return (
     <div className="related__container">
       {props.isLoading && <LoadingSpinner />}

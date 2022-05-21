@@ -22,17 +22,19 @@ const MovieDetails = (props) => {
 
   const fetchRelatedMovies = useCallback(() => {
     let imdbUrl = `https://imdb-api.com/en/API/Title/k_n4q9ekrw/${imdbSearchKey}`;
+    console.log(imdbSearchKey);
     fetch(imdbUrl)
       .then((res) => res.json())
-      .then((data) => setSimilarMovies(data.similars));
+      .then((data) => setSimilarMovies(data.similars))
+      .catch((err) => console.log(err));
 
     setIsLoadingRelated(false);
   }, [imdbSearchKey]);
 
   useEffect(() => {
     fetchSearchKeyFromImdb();
-    //fetchRelatedMovies();
-  }, [fetchSearchKeyFromImdb]);
+    fetchRelatedMovies();
+  }, [fetchSearchKeyFromImdb, fetchRelatedMovies]);
 
   const relatedClickHandler = () => {
     setShowRelated(true);
