@@ -8,6 +8,7 @@ const MovieDetails = (props) => {
   const [similarMovies, setSimilarMovies] = useState([]);
   const [showRelated, setShowRelated] = useState(false);
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
+  const [ImdbKeyWords, setImdbKeyWords] = useState([]);
   let imdbSearchKey = imdbResults?.id;
   let wikiUrl = `http://en.wikipedia.org/?curid=${props.searchKey}`;
   let imdbUrl = `https://www.imdb.com/title/${imdbSearchKey}/`;
@@ -19,17 +20,21 @@ const MovieDetails = (props) => {
       .then((data) => setImdbResults(data.results[0]))
       .catch((err) => console.log(err));
   }, [props.details.title]);
-
+  //here get the key for searching in imdb api
   const fetchRelatedMovies = useCallback(() => {
     let imdbUrl = `https://imdb-api.com/en/API/Title/k_n4q9ekrw/${imdbSearchKey}`;
     console.log(imdbSearchKey);
     fetch(imdbUrl)
       .then((res) => res.json())
-      .then((data) => setSimilarMovies(data.similars))
+      .then((data) => {
+        setSimilarMovies(data.similars);
+        setImdbKeyWords(data.keywords);
+      })
       .catch((err) => console.log(err));
-
     setIsLoadingRelated(false);
   }, [imdbSearchKey]);
+  //here get the similar movies if its have on imdb list
+  console.log("ez a searc", ImdbKeyWords);
 
   useEffect(() => {
     fetchSearchKeyFromImdb();
@@ -38,7 +43,6 @@ const MovieDetails = (props) => {
 
   const relatedClickHandler = () => {
     setShowRelated(true);
-    fetchRelatedMovies();
   };
 
   return (

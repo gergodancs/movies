@@ -3,7 +3,7 @@ import "./styles/relatedMovies.css";
 import LoadingSpinner from "./LoadingSpinner";
 
 const RelatedMovies = (props) => {
-  if (props.similarMovies.length === 0) {
+  if (props.similarMovies?.length === 0) {
     return <h2>Sorry, IMDB says no movies like this </h2>;
   }
   return (
