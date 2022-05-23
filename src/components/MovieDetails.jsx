@@ -8,33 +8,44 @@ const MovieDetails = (props) => {
   const [similarMovies, setSimilarMovies] = useState([]);
   const [showRelated, setShowRelated] = useState(false);
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
-  const [ImdbKeyWords, setImdbKeyWords] = useState([]);
+  const [imdbKeyWords, setImdbKeyWords] = useState([]);
+
   let imdbSearchKey = imdbResults?.id;
   let wikiUrl = `http://en.wikipedia.org/?curid=${props.searchKey}`;
   let imdbUrl = `https://www.imdb.com/title/${imdbSearchKey}/`;
 
+  //here get the key for searching in imdb api
+
   const fetchSearchKeyFromImdb = useCallback(() => {
     let imdbUrl = `https://imdb-api.com/en/API/SearchMovie/k_n4q9ekrw/${props.details.title}`;
+    console.log("searchkexyurl", imdbUrl);
     fetch(imdbUrl)
       .then((res) => res.json())
       .then((data) => setImdbResults(data.results[0]))
       .catch((err) => console.log(err));
   }, [props.details.title]);
-  //here get the key for searching in imdb api
+
+  //here get the similar movies if its have on imdb list or do advanced search
+
   const fetchRelatedMovies = useCallback(() => {
     let imdbUrl = `https://imdb-api.com/en/API/Title/k_n4q9ekrw/${imdbSearchKey}`;
     console.log(imdbSearchKey);
     fetch(imdbUrl)
       .then((res) => res.json())
       .then((data) => {
-        setSimilarMovies(data.similars);
-        setImdbKeyWords(data.keywords);
+        if (data.similars) {
+          setSimilarMovies(data.similars);
+          setImdbKeyWords(data.keywords);
+        } else {
+          fetch(
+            `https://imdb-api.com/API/AdvancedSearch/k_l4ix16jn?keywords=${imdbKeyWords}`
+          ).then((res) => res.json().then((data) => setSimilarMovies(data)));
+        }
       })
       .catch((err) => console.log(err));
     setIsLoadingRelated(false);
-  }, [imdbSearchKey]);
-  //here get the similar movies if its have on imdb list
-  console.log("ez a searc", ImdbKeyWords);
+  }, [imdbSearchKey, imdbKeyWords]);
+  // console.log("ez a searc", imdbKeyWords);
 
   useEffect(() => {
     fetchSearchKeyFromImdb();
@@ -74,3 +85,25 @@ const MovieDetails = (props) => {
 };
 
 export default MovieDetails;
+
+// const fetchSimilarBasedImdb = useCallback(() => {
+//   let imdbUrl = `https://imdb-api.com/en/API/Title/k_n4q9ekrw/${imdbSearchKey}`;
+//   fetch(imdbUrl)
+//     .then((res) => res.json())
+//     .then((data) => {
+//       setSimilarMovies(data.similars);
+//       setImdbKeyWords(data.keywords);
+//     })
+//     .catch((err) => console.log(err));
+//   console.log("searckey", imdbSearchKey);
+// }, [imdbSearchKey]);
+
+// const fetchSimilarAdvanced = useCallback(() => {
+//   fetch(
+//     `https://imdb-api.com/API/AdvancedSearch/k_l4ix16jn?keywords=${imdbKeyWords}`
+//   )
+//     .then((res) => res.json())
+//     .then((data) => setSimilarMovies(data))
+//     .catch((err) => console.log(err));
+//   console.log("words", imdbKeyWords);
+// }, [imdbKeyWords]);
