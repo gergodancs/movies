@@ -20,6 +20,8 @@ const Movies = (props) => {
     gsrlimit: 1,
   };
 
+  const { movies } = props;
+
   const fetchDetailsFromWiki = async (title) => {
     params.gsrsearch = title + " movie";
     const response = await axios(url, { params });
@@ -33,7 +35,7 @@ const Movies = (props) => {
   return (
     <>
       <ul>
-        {props.movies.map((movie) => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <div className="movie__basic">

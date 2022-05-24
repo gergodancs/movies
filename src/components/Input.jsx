@@ -12,20 +12,13 @@ const Input = () => {
   const movies_query = `{
     searchMovies(query: "${input}") {
       id
+      keywords{
+        name
+      }
       name
       overview
       releaseDate
-      cast {
-        id
-        person {
-          name
-        }
-        role {
-          ... on Cast {
-            character
-          }
-        }
-      }
+      
     }
   }`;
 
@@ -69,10 +62,7 @@ const Input = () => {
   if (isLoading) {
     content = <LoadingSpinner />;
   }
-  let isInputEmpty = false;
-  if (input.length > 0) {
-    isInputEmpty = true;
-  }
+
   return (
     <>
       <form onSubmit={formSubmitHandler}>
@@ -82,7 +72,7 @@ const Input = () => {
           placeholder="Type a movie title:"
           onChange={(e) => setInput(e.target.value)}
         />
-        <button disabled={!isInputEmpty}>Search Movies</button>
+        <button disabled={!input.length}>Search Movies</button>
       </form>
       {content}
     </>
