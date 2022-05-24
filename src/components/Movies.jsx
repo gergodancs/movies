@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import GraphSimilars from "./GraphSimilars";
 import MovieDetails from "./MovieDetails";
 import "./styles/movies.css";
 
@@ -7,6 +8,8 @@ const Movies = (props) => {
   const [detailsFromWiki, setDetailsFromWiki] = useState([]);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [wikiSearchKey, setWikiSearchKey] = useState(null);
+  const [showRelatedGraph, setShowRelatedGraph] = useState(false);
+  const [idOfMovie, setIdOfMovie] = useState(null);
   const url = `https://en.wikipedia.org/w/api.php?`;
   const params = {
     origin: "*",
@@ -19,6 +22,7 @@ const Movies = (props) => {
     generator: "search",
     gsrlimit: 1,
   };
+  let filtered = null;
 
   const { movies } = props;
 
@@ -31,29 +35,48 @@ const Movies = (props) => {
     response && setDetailsFromWiki(data[key]);
     setShowDetailsModal(true);
   };
+  //console.log(movies[0].similar);
+  if (idOfMovie) {
+    filtered = movies.filter((item) => item.id === idOfMovie);
+  }
 
   return (
     <>
-      <ul>
-        {movies.map((movie) => {
-          return (
-            <li key={movie.id}>
-              <div className="movie__basic">
-                <h2 onClick={() => fetchDetailsFromWiki(movie.name)}>
-                  {movie.name}
-                </h2>
-                <p>{movie.overview}</p>
-                <span>Release date: {movie?.releaseDate?.slice(0, 10)}</span>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      {!showRelatedGraph && (
+        <ul>
+          {movies.map((movie, index) => {
+            return (
+              <li key={movie.id}>
+                <div className="movie__basic">
+                  <h2 onClick={() => fetchDetailsFromWiki(movie.name)}>
+                    {movie.name}
+                  </h2>
+                  <p>{movie.overview}</p>
+                  <span>Release date: {movie?.releaseDate?.slice(0, 10)}</span>
+                  <button
+                    onClick={(prevState) => {
+                      setShowRelatedGraph(!showRelatedGraph);
+                      setIdOfMovie(movie.id);
+                    }}
+                  >
+                    Show Related
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {showRelatedGraph && (
+        <GraphSimilars filtered={filtered} close={setShowRelatedGraph} />
+      )}
+
       {showDetailsModal && (
         <MovieDetails
           details={detailsFromWiki}
           showModal={setShowDetailsModal}
           searchKey={wikiSearchKey}
+          movies={movies}
         />
       )}
     </>

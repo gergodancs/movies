@@ -15,6 +15,10 @@ const Input = () => {
       keywords{
         name
       }
+      similar{
+        name
+        overview
+      }
       name
       overview
       releaseDate

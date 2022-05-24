@@ -49,7 +49,7 @@ const MovieDetails = (props) => {
   const relatedClickHandler = () => {
     setShowRelated(true);
   };
-
+  console.log(props.movies);
   return (
     <div className="wiki__details">
       <h2>{props.details.title}</h2>
@@ -68,14 +68,15 @@ const MovieDetails = (props) => {
         <button onClick={relatedClickHandler}>Show similar movies</button>
         <button onClick={() => props.showModal(false)}>Close</button>
       </div>
-      {showRelated && (
+
+      {/* {showRelated && (
         <RelatedMovies
           isLoading={isLoadingRelated}
           imdbResults={imdbResults}
           imdbSearchKey={imdbSearchKey}
           similarMovies={similarMovies}
         />
-      )}
+      )} */}
     </div>
   );
 };
