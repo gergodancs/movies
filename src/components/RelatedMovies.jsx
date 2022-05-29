@@ -59,9 +59,12 @@ const RelatedMovies = (props) => {
         {props.filtered &&
           props.filtered[0].similar.map((related) => {
             return (
-              <div key={related.name}>
-                <h3>{related.name}</h3>
-                <p>{related.overview}</p>
+              <div className="related__item" key={related.name}>
+                <div>
+                  <h3>{related.name}</h3>
+                  <p>{related.overview}</p>
+                </div>
+                <img src={related?.poster?.medium} alt="" />
               </div>
             );
           })}

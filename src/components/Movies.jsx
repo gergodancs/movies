@@ -34,7 +34,7 @@ const Movies = (props) => {
     response && setDetailsFromWiki(data[key]);
     setShowDetailsModal(true);
   };
-  //console.log(movies[0].similar);
+
   if (idOfMovie) {
     filtered = movies.filter((item) => item.id === idOfMovie);
   }
@@ -46,16 +46,19 @@ const Movies = (props) => {
           return (
             <li key={movie.id}>
               <div className="movie__basic">
-                <h2
-                  onClick={() => {
-                    setIdOfMovie(movie.id);
-                    fetchDetailsFromWiki(movie.name);
-                  }}
-                >
-                  {movie.name}
-                </h2>
-                <p>{movie.overview}</p>
-                <span>Release date: {movie?.releaseDate?.slice(0, 10)}</span>
+                <div className="movie__details">
+                  <h2
+                    onClick={() => {
+                      setIdOfMovie(movie.id);
+                      fetchDetailsFromWiki(movie.name);
+                    }}
+                  >
+                    {movie.name}
+                  </h2>
+                  <p>{movie.overview}</p>
+                  <span>Release date: {movie?.releaseDate?.slice(0, 10)}</span>
+                </div>
+                <img src={movie?.poster?.medium} alt="" />
               </div>
             </li>
           );

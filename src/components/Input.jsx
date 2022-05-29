@@ -18,8 +18,14 @@ const Input = () => {
       similar{
         name
         overview
+        poster{
+          medium
+        }
       }
       name
+      poster{
+        medium
+      }
       overview
       releaseDate
       

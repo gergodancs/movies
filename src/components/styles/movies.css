@@ -1,16 +1,30 @@
 ul {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
   list-style: none;
   padding: 20px;
   width: 70%;
+  height: 85vh;
+  overflow: auto;
 }
-ul div {
+ul::-webkit-scrollbar {
+  display: none;
+}
+.movie__basic {
+  display: flex;
+  justify-content: space-between;
   background-color: rgb(230, 233, 236);
   padding: 10px;
   border-radius: 10px;
   box-shadow: 1px 1px 4px rgba(80, 80, 80, 0.671);
+}
+.movie__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-around;
 }
 h2 {
   text-align: center;
@@ -49,4 +63,19 @@ span {
 }
 button > a {
   color: black;
+}
+@media screen and (max-width: 600px) {
+  .movie__basic {
+    flex-direction: column;
+  }
+  ul {
+    grid-template-columns: 1fr;
+    width: 90%;
+  }
+  img {
+    margin: 5px auto;
+  }
+  .wiki__details {
+    width: 90%;
+  }
 }
