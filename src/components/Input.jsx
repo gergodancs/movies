@@ -41,6 +41,7 @@ const Input = () => {
         throw new Error("Something went wrong!");
       }
       const data = await response.json();
+
       setMovies(data.data.searchMovies);
     } catch (error) {
       setError(error.message);
@@ -55,16 +56,15 @@ const Input = () => {
   };
 
   let content = <p>Type any movie title and click for the results</p>;
+  if (isLoading) {
+    content = <LoadingSpinner />;
+  }
   if (movies.length > 0) {
     content = <Movies movies={movies} />;
   }
 
   if (error) {
     content = <p>{error}</p>;
-  }
-
-  if (isLoading) {
-    content = <LoadingSpinner />;
   }
 
   return (

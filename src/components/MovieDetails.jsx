@@ -13,6 +13,8 @@ const MovieDetails = (props) => {
   let wikiUrl = `http://en.wikipedia.org/?curid=${props.searchKey}`;
   let imdbUrl = `https://www.imdb.com/title/${imdbSearchKey}/`;
 
+  const { filtered } = props;
+
   const fetchSearchKeyFromImdb = useCallback(() => {
     let imdbUrl = `https://imdb-api.com/en/API/SearchMovie/k_n4q9ekrw/${props.details.title}`;
     console.log("searchkexyurl", imdbUrl);
@@ -49,7 +51,7 @@ const MovieDetails = (props) => {
   const relatedClickHandler = () => {
     setShowRelated(true);
   };
-  console.log(props.movies);
+
   return (
     <div className="wiki__details">
       <h2>{props.details.title}</h2>
@@ -69,14 +71,15 @@ const MovieDetails = (props) => {
         <button onClick={() => props.showModal(false)}>Close</button>
       </div>
 
-      {/* {showRelated && (
+      {showRelated && (
         <RelatedMovies
           isLoading={isLoadingRelated}
           imdbResults={imdbResults}
           imdbSearchKey={imdbSearchKey}
           similarMovies={similarMovies}
+          filtered={filtered}
         />
-      )} */}
+      )}
     </div>
   );
 };

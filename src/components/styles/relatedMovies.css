@@ -5,3 +5,10 @@ img {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+.related__buttons {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+}

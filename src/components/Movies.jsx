@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import GraphSimilars from "./GraphSimilars";
+
 import MovieDetails from "./MovieDetails";
 import "./styles/movies.css";
 
@@ -8,7 +8,6 @@ const Movies = (props) => {
   const [detailsFromWiki, setDetailsFromWiki] = useState([]);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [wikiSearchKey, setWikiSearchKey] = useState(null);
-  const [showRelatedGraph, setShowRelatedGraph] = useState(false);
   const [idOfMovie, setIdOfMovie] = useState(null);
   const url = `https://en.wikipedia.org/w/api.php?`;
   const params = {
@@ -42,41 +41,34 @@ const Movies = (props) => {
 
   return (
     <>
-      {!showRelatedGraph && (
-        <ul>
-          {movies.map((movie, index) => {
-            return (
-              <li key={movie.id}>
-                <div className="movie__basic">
-                  <h2 onClick={() => fetchDetailsFromWiki(movie.name)}>
-                    {movie.name}
-                  </h2>
-                  <p>{movie.overview}</p>
-                  <span>Release date: {movie?.releaseDate?.slice(0, 10)}</span>
-                  <button
-                    onClick={(prevState) => {
-                      setShowRelatedGraph(!showRelatedGraph);
-                      setIdOfMovie(movie.id);
-                    }}
-                  >
-                    Show Related
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {showRelatedGraph && (
-        <GraphSimilars filtered={filtered} close={setShowRelatedGraph} />
-      )}
+      <ul>
+        {movies.map((movie, index) => {
+          return (
+            <li key={movie.id}>
+              <div className="movie__basic">
+                <h2
+                  onClick={() => {
+                    setIdOfMovie(movie.id);
+                    fetchDetailsFromWiki(movie.name);
+                  }}
+                >
+                  {movie.name}
+                </h2>
+                <p>{movie.overview}</p>
+                <span>Release date: {movie?.releaseDate?.slice(0, 10)}</span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
 
-      {showDetailsModal && (
+      {showDetailsModal && idOfMovie && (
         <MovieDetails
           details={detailsFromWiki}
           showModal={setShowDetailsModal}
           searchKey={wikiSearchKey}
           movies={movies}
+          filtered={filtered}
         />
       )}
     </>
