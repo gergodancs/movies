@@ -43,10 +43,10 @@ const MovieDetails = (props) => {
     setIsLoadingRelated(false);
   }, [imdbSearchKey, imdbKeyWords]);
 
-  // useEffect(() => {
-  //   fetchSearchKeyFromImdb();
-  //   fetchRelatedMovies();
-  // }, [fetchSearchKeyFromImdb, fetchRelatedMovies]);
+  useEffect(() => {
+    fetchSearchKeyFromImdb();
+    //fetchRelatedMovies();
+  }, [fetchSearchKeyFromImdb]);
 
   const relatedClickHandler = () => {
     fetchSearchKeyFromImdb();

@@ -22,7 +22,7 @@ const RelatedMovies = (props) => {
     console.log(props.similarMovies);
     if (props.similarMovies.results) {
       return (
-        <div className="related__container">
+        <div className="related__container imdb">
           {props.isLoadingRelated && <LoadingSpinner />}
           {props.similarMovies.results.map((movie) => {
             return (
@@ -38,7 +38,7 @@ const RelatedMovies = (props) => {
     }
     if (props.similarMovies) {
       return (
-        <div className="related__container">
+        <div className="related__container imdb">
           {props.isLoadingRelated && <LoadingSpinner />}
           {props.similarMovies.map((movie) => {
             return (
