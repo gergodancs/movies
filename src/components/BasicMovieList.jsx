@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import StoreCtx from "../store/store-context";
 
-const BasicMovieList = (props) => {
+const BasicMovieList = () => {
   const ctx = useContext(StoreCtx);
   return (
     <ul>
@@ -12,8 +12,8 @@ const BasicMovieList = (props) => {
               <div className="movie__details">
                 <h2
                   onClick={() => {
-                    props.setIdOfMovie(movie.id);
-                    props.fetchDetailsFromWiki(movie.name);
+                    ctx.setIdOfMovie(movie.id);
+                    ctx.fetchDetailsFromWiki(movie.name);
                   }}
                 >
                   {movie.name}

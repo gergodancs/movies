@@ -12,19 +12,17 @@ const MovieDetails = (props) => {
   const [imdbResults, setImdbResults] = useState([]);
   const [showRelated, setShowRelated] = useState(false);
   let imdbSearchKey = imdbResults?.id;
-  let wikiUrl = `http://en.wikipedia.org/?curid=${props.searchKey}`;
+  let wikiUrl = `http://en.wikipedia.org/?curid=${ctx.wikiSearchKey}`;
   let imdbUrl = `https://www.imdb.com/title/${imdbSearchKey}/`;
 
-  const { filtered } = props;
-
   const fetchSearchKeyFromImdb = useCallback(() => {
-    let imdbUrl = `https://imdb-api.com/en/API/SearchMovie/k_n4q9ekrw/${props.details.title}`;
+    let imdbUrl = `https://imdb-api.com/en/API/SearchMovie/k_n4q9ekrw/${ctx.detailsFromWiki.title}`;
 
     fetch(imdbUrl)
       .then((res) => res.json())
       .then((data) => setImdbResults(data.results[0]))
       .catch((err) => console.log(err));
-  }, [props.details.title]);
+  }, [ctx.detailsFromWiki.title]);
 
   const fetchRelatedMovies = useCallback(() => {
     let imdbUrl = `https://imdb-api.com/en/API/Title/k_n4q9ekrw/${imdbSearchKey}`;
@@ -57,9 +55,9 @@ const MovieDetails = (props) => {
 
   return (
     <div className="wiki__details">
-      <h2>{props.details.title}</h2>
+      <h2>{ctx.detailsFromWiki.title}</h2>
       <p>
-        {props.details.extract}
+        {ctx.detailsFromWiki.extract}
         <a href={wikiUrl} target="_blank" rel="noopener noreferrer">
           Show more
         </a>
@@ -80,7 +78,6 @@ const MovieDetails = (props) => {
           imdbResults={imdbResults}
           imdbSearchKey={imdbSearchKey}
           similarMovies={similarMovies}
-          filtered={filtered}
         />
       )}
     </div>

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./styles/relatedMovies.css";
 import LoadingSpinner from "./LoadingSpinner";
+import StoreCtx from "../store/store-context";
 
 const RelatedMovies = (props) => {
+  const ctx = useContext(StoreCtx);
   const [showImdb, setShowImdb] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
   const imdbShowHandler = () => {
@@ -57,8 +59,8 @@ const RelatedMovies = (props) => {
   const GraphSearch = () => {
     return (
       <div className="related__container">
-        {props.filtered &&
-          props.filtered[0].similar.map((related) => {
+        {ctx.filtered &&
+          ctx.filtered[0].similar.map((related) => {
             return (
               <div className="related__item" key={related.name}>
                 <div>

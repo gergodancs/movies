@@ -8,6 +8,7 @@ const StoreCtx = React.createContext({
   error: null,
   detailsFromWiki: [],
   wikiSearchKey: null,
+  idOfMovie: null,
 });
 
 export const StoreCtxProvider = (props) => {
@@ -15,10 +16,15 @@ export const StoreCtxProvider = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [detailsFromWiki, setDetailsFromWiki] = useState([]);
   const [wikiSearchKey, setWikiSearchKey] = useState(null);
-
+  const [idOfMovie, setIdOfMovie] = useState(null);
   const [movies, setMovies] = useState([]);
-
   const [error, setError] = useState(null);
+
+  let filtered = null;
+
+  if (idOfMovie) {
+    filtered = movies.filter((item) => item.id === idOfMovie);
+  }
 
   const fetchMoviesHandler = async (input) => {
     const movies_query = `{
@@ -102,6 +108,9 @@ export const StoreCtxProvider = (props) => {
         wikiSearchKey: wikiSearchKey,
         setWikiSearchKey: setWikiSearchKey,
         fetchDetailsFromWiki: fetchDetailsFromWiki,
+        idOfMovie: idOfMovie,
+        setIdOfMovie: setIdOfMovie,
+        filtered: filtered,
       }}
     >
       {props.children}
