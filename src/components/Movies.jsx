@@ -42,11 +42,13 @@ const Movies = (props) => {
 
   return (
     <>
-      <BasicMovieList
-        movies={movies}
-        setIdOfMovie={setIdOfMovie}
-        fetchDetailsFromWiki={fetchDetailsFromWiki}
-      />
+      {!showDetailsModal && (
+        <BasicMovieList
+          movies={movies}
+          setIdOfMovie={setIdOfMovie}
+          fetchDetailsFromWiki={fetchDetailsFromWiki}
+        />
+      )}
 
       {showDetailsModal && idOfMovie && (
         <MovieDetails

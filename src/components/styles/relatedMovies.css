@@ -2,10 +2,10 @@ img {
   max-width: 200px;
 }
 .related__container {
-  height: 70vh;
+  height: 65vh;
   position: relative;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   padding: 10px;
   z-index: 2;

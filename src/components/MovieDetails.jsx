@@ -45,7 +45,6 @@ const MovieDetails = (props) => {
 
   useEffect(() => {
     fetchSearchKeyFromImdb();
-    //fetchRelatedMovies();
   }, [fetchSearchKeyFromImdb]);
 
   const relatedClickHandler = () => {
