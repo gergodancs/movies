@@ -42,9 +42,11 @@ const RelatedMovies = (props) => {
           {props.isLoadingRelated && <LoadingSpinner />}
           {props.similarMovies.map((movie) => {
             return (
-              <div key={movie.id}>
-                <h3>{movie.title}</h3>
-                <img src={movie.image} alt="pics" />
+              <div className="related__item" key={movie.id}>
+                <div>
+                  <h3>{movie.title}</h3>
+                  <img src={movie.image} alt="pics" />
+                </div>
               </div>
             );
           })}

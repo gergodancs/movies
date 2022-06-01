@@ -42,8 +42,9 @@ img {
   .related__item {
     flex-direction: column;
   }
-  .related__container.imdb {
+  .related__container {
     grid-template-columns: 1fr;
+    height: 450px;
   }
   .related__container.imdb > div {
     display: flex;
@@ -52,5 +53,8 @@ img {
   }
   img {
     margin: 0 auto;
+  }
+  .related__container.imdb {
+    grid-template-columns: 1fr;
   }
 }
