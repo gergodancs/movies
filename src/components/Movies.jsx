@@ -1,61 +1,35 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import StoreCtx from "../store/store-context";
 import BasicMovieList from "./BasicMovieList";
 
 import MovieDetails from "./MovieDetails";
 import "./styles/movies.css";
 
 const Movies = (props) => {
-  const [detailsFromWiki, setDetailsFromWiki] = useState([]);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [wikiSearchKey, setWikiSearchKey] = useState(null);
+  const ctx = useContext(StoreCtx);
+
   const [idOfMovie, setIdOfMovie] = useState(null);
-  const url = `https://en.wikipedia.org/w/api.php?`;
-  const params = {
-    origin: "*",
-    format: "json",
-    action: "query",
-    prop: "extracts",
-    exchars: 250,
-    exintro: true,
-    explaintext: true,
-    generator: "search",
-    gsrlimit: 1,
-  };
+
   let filtered = null;
 
-  const { movies } = props;
-
-  const fetchDetailsFromWiki = async (title) => {
-    params.gsrsearch = title + " movie";
-    const response = await axios(url, { params });
-    let data = response.data.query.pages;
-    let key = Object.keys(data);
-    setWikiSearchKey(key[0]);
-    response && setDetailsFromWiki(data[key]);
-    setShowDetailsModal(true);
-  };
-
   if (idOfMovie) {
-    filtered = movies.filter((item) => item.id === idOfMovie);
+    filtered = ctx.movies.filter((item) => item.id === idOfMovie);
   }
 
   return (
     <>
-      {!showDetailsModal && (
+      {!ctx.showModal && (
         <BasicMovieList
-          movies={movies}
           setIdOfMovie={setIdOfMovie}
-          fetchDetailsFromWiki={fetchDetailsFromWiki}
+          fetchDetailsFromWiki={ctx.fetchDetailsFromWiki}
         />
       )}
 
-      {showDetailsModal && idOfMovie && (
+      {ctx.showModal && idOfMovie && (
         <MovieDetails
-          details={detailsFromWiki}
-          showModal={setShowDetailsModal}
-          searchKey={wikiSearchKey}
-          movies={movies}
+          details={ctx.detailsFromWiki}
+          searchKey={ctx.wikiSearchKey}
           filtered={filtered}
         />
       )}

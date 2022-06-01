@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import StoreCtx from "../store/store-context";
 
 const BasicMovieList = (props) => {
+  const ctx = useContext(StoreCtx);
   return (
     <ul>
-      {props.movies.map((movie, index) => {
+      {ctx.movies.map((movie, index) => {
         return (
           <li key={movie.id}>
             <div className="movie__basic">

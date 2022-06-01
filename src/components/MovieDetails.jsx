@@ -1,9 +1,11 @@
 import "./styles/movies.css";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import RelatedMovies from "./RelatedMovies";
+import StoreCtx from "../store/store-context";
 
 //imdb api key: k_n4q9ekrw
 const MovieDetails = (props) => {
+  const ctx = useContext(StoreCtx);
   const [imdbKeyWords, setImdbKeyWords] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
@@ -69,7 +71,7 @@ const MovieDetails = (props) => {
           </a>
         </button>
         <button onClick={relatedClickHandler}>Show similar movies</button>
-        <button onClick={() => props.showModal(false)}>Close</button>
+        <button onClick={() => ctx.setShowModal(false)}>Close</button>
       </div>
 
       {showRelated && (

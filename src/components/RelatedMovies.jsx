@@ -19,7 +19,6 @@ const RelatedMovies = (props) => {
   };
 
   const ImdbSearch = () => {
-    console.log(props.similarMovies);
     if (props.similarMovies.results) {
       return (
         <div className="related__container imdb">
