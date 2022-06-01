@@ -70,20 +70,20 @@ export const StoreCtxProvider = (props) => {
     }
     setIsLoading(false);
   };
-  const url = `https://en.wikipedia.org/w/api.php?`;
-  const params = {
-    origin: "*",
-    format: "json",
-    action: "query",
-    prop: "extracts",
-    exchars: 250,
-    exintro: true,
-    explaintext: true,
-    generator: "search",
-    gsrlimit: 1,
-  };
 
   const fetchDetailsFromWiki = async (title) => {
+    const url = `https://en.wikipedia.org/w/api.php?`;
+    const params = {
+      origin: "*",
+      format: "json",
+      action: "query",
+      prop: "extracts",
+      exchars: 250,
+      exintro: true,
+      explaintext: true,
+      generator: "search",
+      gsrlimit: 1,
+    };
     params.gsrsearch = title + " movie";
     const response = await axios(url, { params });
     let data = response.data.query.pages;
@@ -96,21 +96,22 @@ export const StoreCtxProvider = (props) => {
   return (
     <StoreCtx.Provider
       value={{
+        movies: movies,
+        filtered: filtered,
+
+        error: error,
+        fetchDetailsFromWiki: fetchDetailsFromWiki,
+        fetchMoviesHandler: fetchMoviesHandler,
         showModal: showModal,
         setShowModal: setShowModal,
         isLoading: isLoading,
         setIsLoading: setIsLoading,
-        movies: movies,
-        error: error,
-        fetchMoviesHandler: fetchMoviesHandler,
         detailsFromWiki: detailsFromWiki,
         setDetailsFromWiki: setDetailsFromWiki,
         wikiSearchKey: wikiSearchKey,
         setWikiSearchKey: setWikiSearchKey,
-        fetchDetailsFromWiki: fetchDetailsFromWiki,
         idOfMovie: idOfMovie,
         setIdOfMovie: setIdOfMovie,
-        filtered: filtered,
       }}
     >
       {props.children}
