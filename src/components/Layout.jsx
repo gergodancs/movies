@@ -8,7 +8,11 @@ import "./styles/input.css";
 const Input = () => {
   const ctx = useContext(StoreCtx);
 
-  let content = <p>Type any movie title and click for the results</p>;
+  let content = (
+    <p style={{ color: "#fff" }}>
+      Type any movie title and click for the results
+    </p>
+  );
   if (ctx.isLoading) {
     content = <LoadingSpinner />;
   }
