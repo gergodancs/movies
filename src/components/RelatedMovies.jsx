@@ -1,14 +1,38 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useCallback } from "react";
 import "./styles/relatedMovies.css";
-import LoadingSpinner from "./LoadingSpinner";
-import StoreCtx from "../store/store-context";
+
+import ImdbSearch from "./ImdbSearch";
+import GraphSearch from "./GraphSearch";
 
 const RelatedMovies = (props) => {
-  const ctx = useContext(StoreCtx);
   const [showImdb, setShowImdb] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [imdbKeyWords, setImdbKeyWords] = useState([]);
+  const [isLoadingRelated, setIsLoadingRelated] = useState(true);
+
+  const fetchRelatedMovies = useCallback(() => {
+    let imdbUrl = `https://imdb-api.com/en/API/Title/k_n4q9ekrw/${props.imdbSearchKey}`;
+
+    fetch(imdbUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.similars) {
+          setSimilarMovies(data.similars);
+          setImdbKeyWords(data.keywords);
+        } else {
+          fetch(
+            `https://imdb-api.com/API/AdvancedSearch/k_l4ix16jn?keywords=${imdbKeyWords}`
+          ).then((res) => res.json().then((data) => setSimilarMovies(data)));
+        }
+      })
+      .catch((err) => console.log(err));
+    setIsLoadingRelated(false);
+  }, [props.imdbSearchKey, imdbKeyWords]);
+
   const imdbShowHandler = () => {
     if (showGraph) {
+      fetchRelatedMovies();
       setShowGraph(false);
     }
     return setShowImdb(!showImdb);
@@ -20,67 +44,18 @@ const RelatedMovies = (props) => {
     return setShowGraph(true);
   };
 
-  const ImdbSearch = () => {
-    if (props.similarMovies.results) {
-      return (
-        <div className="related__container imdb">
-          {props.isLoadingRelated && <LoadingSpinner />}
-          {props.similarMovies.results.map((movie) => {
-            return (
-              <div key={movie.id}>
-                <h3>{movie.title}</h3>
-                <img src={movie.img} alt="pics" />
-                <p>IMDB rating: {movie.imdbRating}</p>
-              </div>
-            );
-          })}
-        </div>
-      );
-    }
-    if (props.similarMovies) {
-      return (
-        <div className="related__container imdb">
-          {props.isLoadingRelated && <LoadingSpinner />}
-          {props.similarMovies.map((movie) => {
-            return (
-              <div className="related__item" key={movie.id}>
-                <div>
-                  <h3>{movie.title}</h3>
-                  <img src={movie.image} alt="pics" />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      );
-    }
-  };
-
-  const GraphSearch = () => {
-    return (
-      <div className="related__container">
-        {ctx.filtered &&
-          ctx.filtered[0].similar.map((related) => {
-            return (
-              <div className="related__item" key={related.name}>
-                <div>
-                  <h3>{related.name}</h3>
-                  <p>{related.overview}</p>
-                </div>
-                <img src={related?.poster?.medium} alt="" />
-              </div>
-            );
-          })}
-      </div>
-    );
-  };
   return (
     <>
       <div className="related__buttons">
         <button onClick={imdbShowHandler}>Show IMDB Results</button>
         <button onClick={graphShowHandler}>Show graph Results</button>
       </div>
-      {showImdb && <ImdbSearch />}
+      {showImdb && (
+        <ImdbSearch
+          similarMovies={similarMovies}
+          isLoadingRelated={isLoadingRelated}
+        />
+      )}
       {showGraph && <GraphSearch />}
     </>
   );
