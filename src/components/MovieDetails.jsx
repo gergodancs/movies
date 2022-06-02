@@ -6,9 +6,7 @@ import StoreCtx from "../store/store-context";
 //imdb api key: k_n4q9ekrw
 const MovieDetails = (props) => {
   const ctx = useContext(StoreCtx);
-  const [imdbKeyWords, setImdbKeyWords] = useState([]);
-  const [similarMovies, setSimilarMovies] = useState([]);
-  const [isLoadingRelated, setIsLoadingRelated] = useState(true);
+
   const [imdbResults, setImdbResults] = useState([]);
   const [showRelated, setShowRelated] = useState(false);
   let imdbSearchKey = imdbResults?.id;
@@ -24,32 +22,12 @@ const MovieDetails = (props) => {
       .catch((err) => console.log(err));
   }, [ctx.detailsFromWiki.title]);
 
-  const fetchRelatedMovies = useCallback(() => {
-    let imdbUrl = `https://imdb-api.com/en/API/Title/k_n4q9ekrw/${imdbSearchKey}`;
-
-    fetch(imdbUrl)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.similars) {
-          setSimilarMovies(data.similars);
-          setImdbKeyWords(data.keywords);
-        } else {
-          fetch(
-            `https://imdb-api.com/API/AdvancedSearch/k_l4ix16jn?keywords=${imdbKeyWords}`
-          ).then((res) => res.json().then((data) => setSimilarMovies(data)));
-        }
-      })
-      .catch((err) => console.log(err));
-    setIsLoadingRelated(false);
-  }, [imdbSearchKey, imdbKeyWords]);
-
   useEffect(() => {
     fetchSearchKeyFromImdb();
   }, [fetchSearchKeyFromImdb]);
 
   const relatedClickHandler = () => {
     fetchSearchKeyFromImdb();
-    fetchRelatedMovies();
     setShowRelated(true);
   };
 
@@ -72,14 +50,7 @@ const MovieDetails = (props) => {
         <button onClick={() => ctx.setShowModal(false)}>Close</button>
       </div>
 
-      {showRelated && (
-        <RelatedMovies
-          isLoading={isLoadingRelated}
-          imdbResults={imdbResults}
-          imdbSearchKey={imdbSearchKey}
-          similarMovies={similarMovies}
-        />
-      )}
+      {showRelated && <RelatedMovies imdbSearchKey={imdbSearchKey} />}
     </div>
   );
 };
