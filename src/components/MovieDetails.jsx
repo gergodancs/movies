@@ -12,8 +12,8 @@ const MovieDetails = (props) => {
   const [imdbResults, setImdbResults] = useState([]);
   const [showRelated, setShowRelated] = useState(false);
   let imdbSearchKey = imdbResults?.id;
-  let wikiUrl = `http://en.wikipedia.org/?curid=${ctx.wikiSearchKey}`;
   let imdbUrl = `https://www.imdb.com/title/${imdbSearchKey}/`;
+  let wikiUrl = `http://en.wikipedia.org/?curid=${ctx.wikiSearchKey}`;
 
   const fetchSearchKeyFromImdb = useCallback(() => {
     let imdbUrl = `https://imdb-api.com/en/API/SearchMovie/k_n4q9ekrw/${ctx.detailsFromWiki.title}`;
